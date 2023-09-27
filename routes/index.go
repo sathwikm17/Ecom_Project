@@ -1,0 +1,12 @@
+package routes
+
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/sathwikm17/Ecom_Project/controllers"
+)
+
+func ProductRoutes(r *gin.Engine, pc controllers.ProductController) {
+	pRoute := r.Group("/ecom/product")
+	pRoute.POST("/addproduct", pc.AddProduct)
+	pRoute.GET("/getproduct/:id", pc.GetProductById)
+}
