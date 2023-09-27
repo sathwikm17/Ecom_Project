@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/sathwikm17/Ecom_Project/entities"
@@ -43,6 +44,28 @@ func (prod *ProductService) GetProductById(id primitive.ObjectID) (*entities.Pro
 	return &product, nil
 }
 
-func (prod *ProductService) SearchProducts(name string) (*[]entities.Product, error) {
-	return nil, nil
+func (prod *ProductService) SearchProducts(name string) ([]*entities.Product, error) {
+	var products []*entities.Product
+	cursor, err := prod.Product.Find(context.TODO(), bson.M{"name": name})
+	if err != nil {
+		return nil, err
+	} else {
+		fmt.Println(cursor)
+		for cursor.Next(context.TODO()) {
+			product := &entities.Product{}
+			err := cursor.Decode(product)
+
+			if err != nil {
+				return nil, err
+			}
+			products = append(products, product)
+		}
+		if err := cursor.Err(); err != nil {
+			return nil, err
+		}
+		if len(products) == 0 {
+			return []*entities.Product{}, nil
+		}
+		return products, nil
+	}
 }

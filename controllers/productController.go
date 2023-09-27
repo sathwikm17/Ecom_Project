@@ -40,3 +40,12 @@ func (p ProductController) GetProductById(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, product)
 }
+
+func (p ProductController) GetProductsByName(c *gin.Context) {
+	name := c.Param("name")
+	products, err := p.ProductService.SearchProducts(name)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+	}
+	c.JSON(http.StatusOK, products)
+}
