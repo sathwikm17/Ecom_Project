@@ -7,13 +7,15 @@ import (
 )
 
 type User struct {
-	Id        primitive.ObjectID `bson:"_id"`
-	Name      string             `json:"name" bson:"name,required"`
-	Email     string             `json:"email" bson:"email,required"`
-	Password  string             `json:"password" bson:"password,required"`
-	Role      string             `json:"role" bson:"role,required"`
-	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
-	UpdatedAt time.Time          `json:"updated_at" bson:"updated_at"`
+	Id              primitive.ObjectID `bson:"_id"`
+	FirstName       string             `json:"firstName" bson:"firstName,required"`
+	LastName        string             `json:"lastName" bson:"lastName,required"`
+	Age             int                `json:"age" bson:"age,required"`
+	Email           string             `json:"email" bson:"email,required"`
+	Password        string             `json:"password" bson:"password,required"`
+	ConfirmPassword string             `json:"confirmPassword" bson:"confirmPassword,required"`
+	CreatedAt       time.Time          `json:"created_at" bson:"created_at"`
+	UpdatedAt       time.Time          `json:"updated_at" bson:"updated_at"`
 }
 
 type UserResponse struct {

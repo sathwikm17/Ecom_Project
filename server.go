@@ -25,6 +25,7 @@ func main() {
 	server = gin.Default()
 	InitializeDatabase()
 	InitializeProducts()
+	InitializeUsers()
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	defer mongoClient.Disconnect(ctx)
@@ -47,4 +48,11 @@ func InitializeProducts() {
 	productService := services.InitProductService(productCollection)
 	productController := controllers.InitProductController(productService)
 	routes.ProductRoutes(server, *productController)
+}
+
+func InitializeUsers() {
+	userCollection := config.GetCollection(mongoClient, "ecom", "users")
+	userService := services.InitUserService(userCollection)
+	userController := controllers.InitUserController(userService)
+	routes.UserRoutes(server, *userController)
 }

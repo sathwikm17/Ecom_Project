@@ -11,3 +11,8 @@ func ProductRoutes(r *gin.Engine, pc controllers.ProductController) {
 	pRoute.GET("/getproduct/:id", pc.GetProductById)
 	pRoute.GET("/getproducts/:name", pc.GetProductsByName)
 }
+
+func UserRoutes(r *gin.Engine, uc controllers.UserController) {
+	uRoute := r.Group("/ecom/user")
+	uRoute.POST("/register", uc.Register)
+}

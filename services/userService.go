@@ -1,8 +1,13 @@
 package services
 
 import (
+	"context"
+	"strings"
+	"time"
+
 	"github.com/sathwikm17/Ecom_Project/entities"
 	"github.com/sathwikm17/Ecom_Project/interfaces"
+	"github.com/sathwikm17/Ecom_Project/utils"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -15,7 +20,22 @@ func InitUserService(collection *mongo.Collection) interfaces.IUser {
 }
 
 func (user *UserService) Register(u *entities.User) (*entities.UserResponse, error) {
-	return nil, nil
+	ctx := context.Background()
+	u.CreatedAt = time.Now()
+	u.UpdatedAt = u.CreatedAt
+	u.Email = strings.ToLower(u.Email)
+
+	hashedPassword, _ := utils.HashPassword(u.Password)
+	u.Password = hashedPassword
+
+	_, err := user.User.InsertOne(ctx, &u)
+	if err != nil {
+		return nil, err
+	}
+
+	registeredUser := entities.UserResponse{Response: "User registered successfully"}
+
+	return &registeredUser, nil
 }
 
 func (user *UserService) Login(u *entities.User) (string, error) {
